@@ -15,7 +15,7 @@ void print_char(va_list *valist, int p, int *count)
 
 	if (p == 1)
 	{
-		_putchar(c);
+		putchar(c);
 		*count = *count + 1;
 	}
 }
