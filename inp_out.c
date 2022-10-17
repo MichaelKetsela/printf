@@ -52,7 +52,7 @@ int print_output(const char *format, va_list *copy)
 	{
 		if (format[i] != '%')
 		{
-			_putchar(format[i]);
+			putchar(format[i]);
 			n_printed = n_printed + 1;
 		}
 
@@ -61,15 +61,15 @@ int print_output(const char *format, va_list *copy)
 			i++;
 			if (format[i] == '%')
 			{
-				_putchar('%');
+				putchar('%');
 				n_printed = n_printed + 1;
 			}
 			else
 			{
 				if (check_for_format(format[i], copy, 1, &n_printed))
 				{
-					_putchar('%');
-					_putchar(format[i]);
+					putchar('%');
+					putchar(format[i]);
 					n_printed = n_printed + 2;
 				}
 			}
