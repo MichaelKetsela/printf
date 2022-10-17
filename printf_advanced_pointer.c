@@ -1,75 +1,86 @@
 #include "main.h"
 
 /**
- * print_pointer - checks for a pointer in va_list and see if prints it.
- * @valist: the working va_list.
- * @p: print indicator. 0 just to get value, 1 for printing the value.
- * @count: bytes counting.
- * Return: void.
+ * is_printable - Evaluates if a char is printable
+ * @c: Char to be evaluated.
+ *
+ * Return: 1 if c is printable, 0 otherwise
  */
-
-void print_pointer(va_list *valist, int p, int *count)
+int is_printable(char c)
 {
-	char *ptr = va_arg(*valist, char *);
+	if (c >= 32 && c < 127)
+		return (1);
 
-	if (p == 1)
-	{
-		if (ptr != NULL)
-		{
-			putchar('0');
-			putchar('x');
-			*count = *count + 2;
-			p_ptr(ptr, count);
-			return;
-		}
-
-		_puts("(nil)", count);
-	}
+	return (0);
 }
 
 /**
- * p_ptr - prints a pointer in hex format.
- * @pointer: pointer to be printed.
- * @count: bytes counting.
- * Return: void.
+ * append_hexa_code - Append ascci in hexadecimal code to buffer
+ * @buffer: Array of chars.
+ * @i: Index at which to start appending.
+ * @ascii_code: ASSCI CODE.
+ * Return: Always 3
  */
-void p_ptr(char *pointer, int *count)
+int append_hexa_code(char ascii_code, char buffer[], int i)
 {
-	int i, found_nz_byte = 0;
-	unsigned char c = 0;
-	my_pointer ptr;
+	char map_to[] = "0123456789ABCDEF";
+	/* The hexa format code is always 2 digits long */
+	if (ascii_code < 0)
+		ascii_code *= -1;
 
-	ptr.ptr = pointer;
-	for (i = sizeof(char *) - 1; i >= 0 ; i--)
-	{
-		c = ptr.c[i];
+	buffer[i++] = '\\';
+	buffer[i++] = 'x';
 
-		c = (ptr.c[i] >> 4) & 0xf;
-		if (found_nz_byte == 0 && c != 0)
-			found_nz_byte = 1;
+	buffer[i++] = map_to[ascii_code / 16];
+	buffer[i] = map_to[ascii_code % 16];
 
-		if (found_nz_byte == 1)
-		{
-			if (c > 9)
-				c = c - 10 + 'a';
-			else
-				c = c + '0';
-			putchar(c);
-			*count = *count + 1;
-		}
+	return (3);
+}
 
-		c = ptr.c[i] & 0xf;
-		if (found_nz_byte == 0 && c != 0)
-			found_nz_byte = 1;
+/**
+ * is_digit - Verifies if a char is a digit
+ * @c: Char to be evaluated
+ *
+ * Return: 1 if c is a digit, 0 otherwise
+ */
+int is_digit(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
 
-		if (found_nz_byte == 1)
-		{
-			if (c > 9)
-				c = c - 10 + 'a';
-			else
-				c = c + '0';
-			putchar(c);
-			*count = *count + 1;
-		}
-	}
+	return (0);
+}
+
+/**
+ * convert_size_number - Casts a number to the specified size
+ * @num: Number to be casted.
+ * @size: Number indicating the type to be casted.
+ *
+ * Return: Casted value of num
+ */
+long int convert_size_number(long int num, int size)
+{
+	if (size == S_LONG)
+		return (num);
+	else if (size == S_SHORT)
+		return ((short)num);
+
+	return ((int)num);
+}
+
+/**
+ * convert_size_unsgnd - Casts a number to the specified size
+ * @num: Number to be casted
+ * @size: Number indicating the type to be casted
+ *
+ * Return: Casted value of num
+ */
+long int convert_size_unsgnd(unsigned long int num, int size)
+{
+	if (size == S_LONG)
+		return (num);
+	else if (size == S_SHORT)
+		return ((unsigned short)num);
+
+	return ((unsigned int)num);
 }
